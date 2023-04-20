@@ -17,7 +17,7 @@ func main() {
 
 	var c = processor.CsvFile{}
 	var proc = c.New("output.csv").(*processor.CsvFile)
-	err := proc.Write([]string{"address", "city", "state", "zip_code", "district", "district_url", "confidence_score", "flagged?"})
+	err := proc.Write([]string{"email", "Your Austin City Council District"})
 	if err != nil {
 		log.Fatal(err)
 	}
