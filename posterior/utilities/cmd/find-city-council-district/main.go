@@ -33,10 +33,11 @@ func main() {
 			log.Fatal(err)
 		}
 
-		var address = strings.ToUpper(line[0])
-		var city = strings.ToUpper(line[1])
-		var state = strings.ToUpper(line[2])
-		var zip = strings.ToUpper(line[3])
+		var email = line[0]
+		var address = strings.ToUpper(line[1])
+		var city = strings.ToUpper(line[2])
+		var state = strings.ToUpper(line[3])
+		var zip = strings.ToUpper(line[4])
 
 		request, err := http.NewRequest("GET",
 			"https://geo.austintexas.gov/arcgis/rest/services/Geocode/COA_Address_Locator/GeocodeServer/findAddressCandidates",
@@ -148,11 +149,15 @@ func main() {
 		}
 
 		district.Candidate = match
+		
+		cc := map[string]string{ "1": "1 (Natasha Harper-Madison)", "2": "2 (Vanessa Fuentes)", "3": "3 (José Velásquez)", "4": "4 (Chito Vela)", "5": "5 (Ryan Alter)", "6": "6 (Mackenzie Kelly)", "7": "7 (Leslie Pool)", "8": "8 (Paige Ellis)", "9": "9 (Zohaib “Zo” Qadri)", "10": "10 (Alison Alter)"}
 
 		if len(district.Features) == 0 {
-			err = proc.Write([]string{address, city, state, zip, "-1", "N/A - address does not reside within a council district, likely within an unincorporated area or outside of Travis County", strconv.FormatFloat(district.Candidate.Score, 'f', 3, 64), "🚩"})
+			err = proc.Write([]string{email, "Live outside of Austin"})
 		} else {
-			err = proc.Write([]string{address, city, state, zip, strconv.FormatInt(district.Features[0].Attributes.CouncilDistrict, 10), district.Features[0].Attributes.CouncilDistrictPath, strconv.FormatFloat(district.Candidate.Score, 'f', 3, 64), ""})
+			var d = strconv.FormatInt(district.Features[0].Attributes.CouncilDistrict, 10)
+			var d_lookup = cc[d]
+			err = proc.Write([]string{email, d_lookup})
 		}
 
 		if err != nil {

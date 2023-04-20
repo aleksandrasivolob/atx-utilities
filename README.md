@@ -1,17 +1,19 @@
 # city of austin, tx utilities
 
+This is a modified version of this program for Rethink35 to use for ActionNetwork uploads
+
 ## find-city-council-district
 
 given a single comma separated values (CSV) file with the following data format (no header):
 
 ```text
-address,city,state,zip_code
+email,address,city,state,zip_code
 ```
 
-will then transform each line with the likely council district number, council district website, and confidence score:
+will then transform each line with the likely council district number
 
 ```text
-address,city,state,zip_code,district,district_url,confidence_score
+email,district
 ```
 
 ### Use Case
@@ -22,16 +24,16 @@ address,city,state,zip_code,district,district_url,confidence_score
 - a mix of perfect/complete entries, misspelled addresses, and partial data
 
 ```text
-200 congress ave, austin, tx, 78701
-2713 e 2nd st, austin, tx, 78702
-3112 Windsor Rd, austin, tx,
-1300 s mopac expy,,,78746
-5808 burnet rd, austin, ,78756
-1319 Rosewood Ave,,,
-3600 presidentiaL rd,,,
-8557 Reserch Blv,,,
-4001 S Lamr Bld,,,
-13429 N US 183,,,
+email, 200 congress ave, austin, tx, 78701
+email, 2713 e 2nd st, austin, tx, 78702
+email, 3112 Windsor Rd, austin, tx,
+email, 1300 s mopac expy,,,78746
+email, 5808 burnet rd, austin, ,78756
+email, 1319 Rosewood Ave,,,
+email, 3600 presidentiaL rd,,,
+email, 8557 Reserch Blv,,,
+email, 4001 S Lamr Bld,,,
+email, 13429 N US 183,,,
 ```
 
 #### When
@@ -39,6 +41,8 @@ address,city,state,zip_code,district,district_url,confidence_score
 - processing input csv w/ app
 
 #### Then
+
+** Outdated: This just produces the council district & councilmember name **
 
 - will produce `output.csv`
 - will reasonably determine the appropriate council district associated with that address
@@ -61,11 +65,11 @@ address,city,state,zip_code,district,district_url,confidence_score
 ### run w/ pants (no need to install go)
 
 ```text
-$ ./pants run posterior/utilities/cmd/find-city-council-district:bin  --run-args='/relative/or/absolute/path/to.csv'
+$ ./pants run posterior/utilities/cmd/find-city-council-district:bin  --run-args='input.csv'
 ```
 
 ### run w/o pants (requires go)
 
 ```text
-$ go run ./... /full/path/to/addresses.csv         
+$ go run ./... input.csv         
 ```
