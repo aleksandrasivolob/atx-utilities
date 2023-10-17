@@ -6,7 +6,6 @@ import (
 	"atx/posterior/utilities/pkg/util"
 	"encoding/json"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"strconv"
@@ -74,7 +73,7 @@ func main() {
 			log.Fatal(err)
 		}
 
-		body, err := ioutil.ReadAll(decompressed)
+		body, err := io.ReadAll(decompressed)
 		if err != nil {
 			log.Fatalf("❌ err: unable transform serialized data: %v", err)
 		}
@@ -101,7 +100,7 @@ func main() {
 		// todo: refactor, abstract out
 
 		request, err = http.NewRequest("POST",
-			"https://www.austintexas.gov/gis/rest/Shared/CouncilDistrictsFill/MapServer/0/query",
+			"https://geo.austintexas.gov/arcgis/rest/services/Shared/Property/MapServer/3/query",
 			nil,
 		)
 
@@ -120,7 +119,7 @@ func main() {
 
 		request.URL.RawQuery = query.Encode()
 
-		request.Header.Set("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
+		request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 		request.Header.Set("Accept", "application/json")
 		request.Header.Set("Accept-Language", "en-US,en;q=0.9")
 		request.Header.Set("Accept-Encoding", "gzip, deflate, br")
@@ -136,7 +135,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		body, err = ioutil.ReadAll(decompressed)
+		body, err = io.ReadAll(decompressed)
 		if err != nil {
 			log.Fatalf("❌ err: unable transform serialized data: %v", err)
 		}
