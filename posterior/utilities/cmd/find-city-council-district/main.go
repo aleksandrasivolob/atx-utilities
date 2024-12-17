@@ -63,7 +63,7 @@ func main() {
 		request.Header.Set("Accept-Encoding", "gzip, deflate, br")
 
 		response, err := client.Do(request)
-		// log.Printf("response %s", response)
+
 		if err != nil {
 			log.Fatalf("err: %v", err)
 		}
