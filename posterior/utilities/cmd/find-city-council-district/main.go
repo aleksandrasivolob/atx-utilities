@@ -39,7 +39,7 @@ func main() {
 		var zip = strings.ToUpper(line[4])
 
 		request, err := http.NewRequest("GET",
-			"https://geo.austintexas.gov/arcgis/rest/services/Geocode/COA_Address_Locator/GeocodeServer/findAddressCandidates",
+			"https://geo.austintexas.gov/arcgis/rest/services/Geocode/COA_Locator/GeocodeServer/findAddressCandidates",
 			nil,
 		)
 
@@ -50,7 +50,7 @@ func main() {
 		query := request.URL.Query()
 
 		query.Add("f", "json")
-		query.Add("Street", address)
+		query.Add("Address", address)
 		query.Add("City", city)
 		query.Add("State", state)
 		query.Add("ZIP", zip)
@@ -63,7 +63,7 @@ func main() {
 		request.Header.Set("Accept-Encoding", "gzip, deflate, br")
 
 		response, err := client.Do(request)
-
+		// log.Printf("response %s", response)
 		if err != nil {
 			log.Fatalf("err: %v", err)
 		}
